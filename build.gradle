@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'maven-publish'
     id 'application'
     id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
@@ -7,8 +8,8 @@ plugins {
 group = 'org.example'
 //version = '1.0-SNAPSHOT'
 version = findProperty('version') ?: '0.1.0'
-sourceCompatibility = '23'
-targetCompatibility = '23'
+sourceCompatibility = '24'
+targetCompatibility = '24'
 mainClassName = 'org.example.TodoApp'
 
 
@@ -51,7 +52,32 @@ tasks.named('startShadowScripts') {
     dependsOn tasks.named('jar')
 }
 
-
 tasks.build {
     dependsOn shadowJar
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId = 'org.example'
+            artifactId = 'TodoApp'
+            version = project.version
+
+            // публикуем именно fat JAR
+            artifact(tasks.shadowJar) {
+                classifier = null
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/zaccler/TodoApp")
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")
+                password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
 }
