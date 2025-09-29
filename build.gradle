@@ -8,8 +8,8 @@ plugins {
 group = 'org.example'
 //version = '1.0-SNAPSHOT'
 version = findProperty('version') ?: '0.1.0'
-sourceCompatibility = '24'
-targetCompatibility = '24'
+sourceCompatibility = '23'
+targetCompatibility = '23'
 mainClassName = 'org.example.TodoApp'
 
 
