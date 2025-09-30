@@ -60,7 +60,7 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
             groupId = 'org.example'
-            artifactId = 'TodoApp'
+            artifactId = 'todoapp'
             version = project.version
 
             // публикуем именно fat JAR
